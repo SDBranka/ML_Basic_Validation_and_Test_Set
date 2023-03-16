@@ -1,3 +1,7 @@
+# This version was reformatted and reads a saved csv file from the data folder
+# instead of reading from an internet document
+
+
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -10,13 +14,9 @@ pd.options.display.float_format = "{:.1f}".format
 
 
 # ---------------------------- Variables ------------------------------- #
-# training_data = "california_housing_train"
-training_data = "."
-# test_data = "california_housing_test"
-testing_data = "."
-# scale_factor = 1000.0
-scale_factor = 0
-my_label = "."
+TRAINING_DATA = "california_housing_train"
+TEST_DATA = "california_housing_test"
+scale_factor = 1000.0
 # The following variables are the hyperparameters.
 learning_rate = 0.08
 epochs = 30
@@ -26,12 +26,11 @@ batch_size = 100
 validation_split = 0.2
 # Identify the feature and the label.
 my_feature = "median_income"    # the median income on a specific city block.
-# my_label = "median_house_value" # the median house value on a specific city block.
+my_label = "median_house_value" # the median house value on a specific city block.
 # That is, you're going to create a model that predicts 
 # house value based solely on the neighborhood's median income.  
 # Set training set size
-# training_set_size = 10000
-training_set_size = 0
+TRAINING_SET_SIZE = 10000
 
 
 # ---------------------------- Functions ------------------------------- #
@@ -110,77 +109,21 @@ def plot_the_loss_curve(epochs, mae_training, mae_validation):
     plt.show()  
 
 
-# ---------------------------- Establish Data and Variables ------------------------------- #
-# ask the user to enter the name of the file to be used for training data
-# continue to ask until the user enters a usable file
-while training_data == ".":
-    training_data = input("enter the name of your training data file: ")
-    # print(f"training_data: {training_data}")
-    
-    # backdoor for testing
-    if training_data == "a":
-        break    
-    
-    try:
-        train_df = pd.read_csv(f"data/{training_data}.csv")
-    except:
-        training_data = "."
+# ---------------------------- Establish Data ------------------------------- #
+# Read the training and test data from .csv files
+train_df = pd.read_csv(f"data/{TRAINING_DATA}.csv")
+test_df = pd.read_csv(f"data/{TEST_DATA}.csv")
 
-# ask the user to enter the name of the file to be used for testing data
-# continue to ask until the user enters a usable file
-while testing_data == ".":
-    testing_data = input("enter the name of your testing data file: ")
-    # print(f"testing_data: {testing_data}")
-    
-    # backdoor for testing
-    if testing_data == "a":
-        break    
-    
-    try:
-        test_df = pd.read_csv(f"data/{testing_data}.csv")
-    except:
-        testing_data = "."
+# Scale the training set's label.
+train_df["median_house_value"] /= scale_factor 
 
-# set the scale factor for the data
-while scale_factor == 0:
-    try:
-        scale_factor = float(input("Enter your desired scale factor (must be greater than 0.0): "))       
-    except ValueError:
-        print("Not an integer! Try again.")
-    except:
-        scale_factor = 0
-
-# set and scale label
-while my_label == ".":
-    my_label = input("Enter the name of your label to be predicted: ")
-    
-    # backdoor for testing
-    if my_label == "a":
-        break    
-    
-    try:
-        # Scale the training set's label.
-        train_df[my_label] /= scale_factor 
-        # Scale the test set's label
-        test_df[my_label] /= scale_factor
-
-    except:
-        print("That column does not exist")
-        my_label = "."
-
-# set training set size
-while training_set_size == 0:
-    try:
-        training_set_size = int(input("Enter your desired sample size (must be greater than 0): "))       
-    except ValueError:
-        print("Not an integer! Try again.")
-    except:
-        training_set_size = 0
+# Scale the test set's label
+test_df["median_house_value"] /= scale_factor
 
 
 # ---------------------------- Program Cycle ------------------------------- #
 # Invoke the functions to build and train the model.
-train_df.head(n=training_set_size)
+train_df.head(n=TRAINING_SET_SIZE)
 
 my_model = build_model(learning_rate)
 
@@ -204,28 +147,6 @@ x_test = test_df[my_feature]
 y_test = test_df[my_label]
 
 results = my_model.evaluate(x_test, y_test, batch_size=batch_size)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
