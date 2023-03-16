@@ -17,15 +17,17 @@ testing_data = "."
 # scale_factor = 1000.0
 scale_factor = 0
 my_label = "."
+my_feature = "."
 # The following variables are the hyperparameters.
-learning_rate = 0.08
+# learning_rate = 0.08
+learning_rate = 0
 epochs = 30
 batch_size = 100
 # Split the original training set into a reduced training 
 # set and a validation set. 
 validation_split = 0.2
 # Identify the feature and the label.
-my_feature = "median_income"    # the median income on a specific city block.
+# my_feature = "median_income"    # the median income on a specific city block.
 # my_label = "median_house_value" # the median house value on a specific city block.
 # That is, you're going to create a model that predicts 
 # house value based solely on the neighborhood's median income.  
@@ -141,16 +143,34 @@ while testing_data == ".":
     except:
         testing_data = "."
 
-# set the scale factor for the data
-while scale_factor == 0:
+# ask the user to set the learning rate for the data
+# continue to ask until the user enters a usable value
+while learning_rate == 0:
     try:
-        scale_factor = float(input("Enter your desired scale factor (must be greater than 0.0): "))       
+        learning_rate = float(input("Enter your desired learning rate (must be greater than 0.0): "))
+        if learning_rate <= 0:  # if not a positive int print message and ask for input again
+            print("Sorry, input must be a positive integer and greater than 0, try again")
+            continue
+        break  
+
     except ValueError:
         print("Not an integer! Try again.")
-    except:
-        scale_factor = 0
 
-# set and scale label
+# ask the user to set the scale factor for the data
+# continue to ask until the user enters a usable value
+while scale_factor == 0:
+    try:
+        scale_factor = float(input("Enter your desired scale factor (must be greater than 0.0): "))
+        if scale_factor <= 0:  # if not a positive int print message and ask for input again
+            print("Sorry, input must be a positive integer and greater than 0, try again")
+            continue
+        break       
+
+    except ValueError:
+        print("Not an integer! Try again.")
+
+# ask the user to set and scale label
+# continue to ask until the user enters an existing column
 while my_label == ".":
     my_label = input("Enter the name of your label to be predicted: ")
     
@@ -168,14 +188,34 @@ while my_label == ".":
         print("That column does not exist")
         my_label = "."
 
-# set training set size
+# ask the user to set the feature
+# continue to ask until the user enters an existing column
+while my_feature == ".":
+    my_feature = input("Enter the name of your feature: ")
+    
+    # backdoor for testing
+    if my_feature == "a":
+        break    
+    
+    try:
+        train_df[my_feature] == True
+
+    except:
+        print("That column does not exist")
+        my_feature = "."
+
+# ask the user to set training set size
+# continue to ask until the user enters a usable value
 while training_set_size == 0:
     try:
-        training_set_size = int(input("Enter your desired sample size (must be greater than 0): "))       
+        training_set_size = int(input("Enter your desired sample size (must be greater than 0): "))    
+        if scale_factor <= 0:  # if not a positive int print message and ask for input again
+            print("Sorry, input must be a positive integer and greater than 0, try again")
+            continue
+        break       
+
     except ValueError:
         print("Not an integer! Try again.")
-    except:
-        training_set_size = 0
 
 
 # ---------------------------- Program Cycle ------------------------------- #
