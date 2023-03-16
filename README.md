@@ -8,10 +8,10 @@
 
 ---
 
-<!-- <p float="center">
-    <img src="https://github.com/SDBranka/US_States_Game/blob/main/Resources/Game_Start_screenshot.png" width=45% height= 315 alt="game start image"/>
-    <img src="https://github.com/SDBranka/US_States_Game/blob/main/Resources/Game_Play_screenshot.png" width=45% alt="game play image"/>
-</p> -->
+<p float="center">
+    <!-- <img src="https://github.com/SDBranka/US_States_Game/blob/main/Resources/Game_Start_screenshot.png" width=45% height= 315 alt="game start image"/> -->
+    <img src="https://github.com/SDBranka/ML_Basic_Validation_and_Test_Set/blob/main/Resources/Screenshot.jpg" width=45% height= 315 alt="graph image"/>
+</p>
 
 ## Description
 
@@ -29,7 +29,8 @@ This app will will allow a user to validate their test model for a basic linear 
         </li>
         <li>the label to be predicted</li>
         <li>the feature</li>
-        <li>and the desired size of the training set to pull from the training set data</li>
+        <li>and the desired size of the training set to pull from the training set data</li></ul>
+    <li>After the user has entered appropriate values to the prompts a graph will be generated and presented based on the data</li>
 </ul>
 
 ##### Technologies
