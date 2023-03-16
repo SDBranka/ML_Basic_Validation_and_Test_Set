@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from matplotlib import pyplot as plt
-import tkinter as tk
+
 
 # ---------------------------- pandas Setup ------------------------------- #
 pd.options.display.max_rows = 10
@@ -10,14 +10,16 @@ pd.options.display.float_format = "{:.1f}".format
 
 
 # ---------------------------- Variables ------------------------------- #
+# training_data = "california_housing_train"
 training_data = "."
+# test_data = "california_housing_test"
 testing_data = "."
+# scale_factor = 1000.0
 scale_factor = 0
 my_label = "."
 my_feature = "."
-# That is, you're going to create a model that predicts 
-# my_label solely on my_feature.  
 # The following variables are the hyperparameters.
+# learning_rate = 0.08
 learning_rate = 0
 epochs = 30
 batch_size = 100
@@ -25,7 +27,12 @@ batch_size = 100
 # set and a validation set. 
 validation_split = 0.2
 # Identify the feature and the label.
+# my_feature = "median_income"    # the median income on a specific city block.
+# my_label = "median_house_value" # the median house value on a specific city block.
+# That is, you're going to create a model that predicts 
+# house value based solely on the neighborhood's median income.  
 # Set training set size
+# training_set_size = 10000
 training_set_size = 0
 
 
@@ -237,36 +244,6 @@ x_test = test_df[my_feature]
 y_test = test_df[my_label]
 
 results = my_model.evaluate(x_test, y_test, batch_size=batch_size)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
