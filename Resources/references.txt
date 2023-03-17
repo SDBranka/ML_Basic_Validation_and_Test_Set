@@ -1,4 +1,0 @@
-Day31_flashcards - tkinter
-day3.py - input
-
-need to restrict entering negative values to the number entries
