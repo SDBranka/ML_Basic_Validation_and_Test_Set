@@ -21,19 +21,19 @@ This app will will allow a user to validate their test model for a basic linear 
 
 ##### Controls
 
-    Once the app is properly set up and run, the user will be required to enter appropriate values for the following:
-    <ul>
-        <li>the name of the training data file (without ".csv")</li>
-        <li>the name of the testing data file (without ".csv")</li>
-        <li>the desired learning rate for the model</li>
-        <li>the desired scale factor for the label for the model<ul>
-            <li>if the value of the data is too large this may beneficial</li></ul>
-        </li>
-        <li>the label to be predicted</li>
-        <li>the feature</li>
-        <li>and the desired size of the training set to pull from the training set data</li>
-    </ul>
-    After the user has entered values they may elect to run the test data in addition to the training/validation data by selecting the check box. When all values have been entered the user should click the "Run Program" button to produce a graph presenting the data curves.
+Once the app is properly set up and run, the user will be required to enter appropriate values for the following:
+<ul>
+    <li>the name of the training data file (without ".csv")</li>
+    <li>the name of the testing data file (without ".csv")</li>
+    <li>the desired learning rate for the model</li>
+    <li>the desired scale factor for the label for the model<ul>
+        <li>if the value of the data is too large this may beneficial</li></ul>
+    </li>
+    <li>the label to be predicted</li>
+    <li>the feature</li>
+    <li>and the desired size of the training set to pull from the training set data</li>
+</ul>
+After the user has entered values they may elect to run the test data in addition to the training/validation data by selecting the check box. When all values have been entered the user should click the "Run Program" button to produce a graph presenting the data curves.
 
 
 ##### Technologies
