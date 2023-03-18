@@ -97,8 +97,8 @@ def plot_the_loss_curve(run_test_data, epochs, mae_training, mae_validation):
 
 
 # for GUI
-def close_warning():
-    err_screen.quit()
+# def close_warning():
+#     err_screen.quit()
 
 
 def error_msg(warning_msg):
@@ -143,7 +143,7 @@ def run_program_button_clicked():
         # value validations
         # are there no empty entries (excluding test_data, handled later)
         if len(training_data) == 0 or len(my_feature) == 0 or len(my_label) == 0 or len(scale_factor) == 0 or len(epochs) == 0 or len(validation_split) == 0 or len(learning_rate) == 0 or len(batch_size) == 0 or len(training_set_size) == 0:
-            error_msg("No field may be left empty")
+            error_msg("No field may \n be left empty")
         check_score += 1
         # are the number types appropriate
         try:
@@ -152,7 +152,7 @@ def run_program_button_clicked():
             learning_rate = float(learning_rate) 
             check_score += 1
         except ValueError:
-            error_msg('Please make sure that scale factor, validation split, and learning rate are all valid decimal numbers')
+            error_msg('Please make sure that scale factor, validation split, \n and learning rate are all valid decimal numbers')
         try:
             epochs = int(epochs) 
             batch_size = int(batch_size) 
@@ -160,10 +160,10 @@ def run_program_button_clicked():
             run_test_data = int(run_test_data)
             check_score += 1
         except ValueError:
-            error_msg('Please make sure that epochs, bacth size, and training set size are all valid whole numbers')
+            error_msg('Please make sure that epochs, batch size, \n and training set size are all valid whole numbers')
         # are all numbers <= 0
         if scale_factor <= 0 or epochs <= 0 or validation_split <= 0 or learning_rate <= 0 or batch_size <= 0 or training_set_size <= 0:
-            error_msg('No field may be 0 or negative')
+            error_msg('No field may be \n 0 or negative')
         else:
             check_score += 1
 
@@ -172,19 +172,19 @@ def run_program_button_clicked():
             train_df = pd.read_csv(f"data/{training_data}.csv")
             check_score += 1
         except:
-            error_msg('That training data file does not exist')
+            error_msg('That training data \n file does not exist')
         # validate and scale label
         try:
             train_df[my_feature] == True
             check_score += 1
         except:
-            error_msg('That feature column does not exist in the training data set files')
+            error_msg('That feature column does not \n exist in the training data set file')
         try:
             # Scale the training set's label.
             train_df[my_label] /= scale_factor
             check_score += 1
         except:
-            error_msg('That label column does not exist in the training data set files')
+            error_msg('That label column does not \n exist in the training data set file')
         
     test_df = None
     # if the user elects to run the test data
@@ -192,7 +192,7 @@ def run_program_button_clicked():
         while check_score < 11:
             # does the testing file exist
             if len(testing_data) == 0:
-                error_msg('You must enter a test data file')
+                error_msg('You must enter a \n test data file')
             else:
                 check_score += 1
 
@@ -200,19 +200,19 @@ def run_program_button_clicked():
                 test_df = pd.read_csv(f"data/{testing_data}.csv")
                 check_score += 1
             except:
-                error_msg('That testing data file does not exist')
+                error_msg('That testing data \n file does not exist')
             try:
                 train_df[my_feature] == True
                 test_df[my_feature] == True
                 check_score += 1
             except:
-                error_msg('That feature column does not exist in the testing data set files')
+                error_msg('That feature column does not \n exist in the testing data set file')
             try:
                 # Scale the test set's label
                 test_df[my_label] /= scale_factor
                 check_score += 1
             except:
-                error_msg('That label column does not exist in the testing data set files')
+                error_msg('That label column does not \n exist in the testing data set file')
     
     # run the program
     train_df.head(n=training_set_size)
