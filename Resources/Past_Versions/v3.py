@@ -124,8 +124,9 @@ while training_data == ".":
         break    
     
     try:
-        train_df = pd.read_csv(f"data/{training_data}.csv")
+        train_df = pd.read_csv(f"../../data/{training_data}.csv")
     except:
+        print("that training file does not exist")
         training_data = "."
 
 # ask the user to enter the name of the file to be used for testing data
@@ -139,8 +140,9 @@ while testing_data == ".":
         break    
     
     try:
-        test_df = pd.read_csv(f"data/{testing_data}.csv")
+        test_df = pd.read_csv(f"../../data/{testing_data}.csv")
     except:
+        print("that testing file does not exist")
         testing_data = "."
 
 # ask the user to set the learning rate for the data

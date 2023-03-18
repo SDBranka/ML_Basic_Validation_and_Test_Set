@@ -1,5 +1,5 @@
 # ML Basic Validation and Test Set v4
-(in progress)
+(complete outside of error messages))
 
 ##### Table of Contents
 
