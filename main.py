@@ -98,7 +98,7 @@ def plot_the_loss_curve(run_test_data, epochs, mae_training, mae_validation):
 
 # for GUI
 # def close_warning():
-#     err_screen.quit()
+#     err_screen.destroy()
 
 
 def error_msg(warning_msg):
@@ -121,7 +121,6 @@ def error_msg(warning_msg):
     # warning_button.grid(row = 2, column = 1)
 
 
-
 def run_program_button_clicked():
     # retrieve values from the entry fields
     training_data = training_data_input.get()
@@ -138,111 +137,117 @@ def run_program_button_clicked():
 
     # check validation score
     check_score = 0
-
-    while check_score < 7:
-        # value validations
-        # are there no empty entries (excluding test_data, handled later)
-        if len(training_data) == 0 or len(my_feature) == 0 or len(my_label) == 0 or len(scale_factor) == 0 or len(epochs) == 0 or len(validation_split) == 0 or len(learning_rate) == 0 or len(batch_size) == 0 or len(training_set_size) == 0:
+    # value validations
+    # are there no empty entries (excluding test_data, handled later)
+    if len(training_data) == 0 or len(my_feature) == 0 or len(my_label) == 0 or len(scale_factor) == 0 or len(epochs) == 0 or len(validation_split) == 0 or len(learning_rate) == 0 or len(batch_size) == 0 or len(training_set_size) == 0:
             error_msg("No field may \n be left empty")
+    else:
         check_score += 1
-        # are the number types appropriate
-        try:
-            scale_factor = float(scale_factor)  
-            validation_split = float(validation_split)  
-            learning_rate = float(learning_rate) 
-            check_score += 1
-        except ValueError:
-            error_msg('Please make sure that scale factor, validation split, \n and learning rate are all valid decimal numbers')
-        try:
-            epochs = int(epochs) 
-            batch_size = int(batch_size) 
-            training_set_size = int(training_set_size) 
-            run_test_data = int(run_test_data)
-            check_score += 1
-        except ValueError:
-            error_msg('Please make sure that epochs, batch size, \n and training set size are all valid whole numbers')
-        # are all numbers <= 0
-        if scale_factor <= 0 or epochs <= 0 or validation_split <= 0 or learning_rate <= 0 or batch_size <= 0 or training_set_size <= 0:
-            error_msg('No field may be \n 0 or negative')
-        else:
-            check_score += 1
 
-        # does the training file exist
-        try:
-            train_df = pd.read_csv(f"data/{training_data}.csv")
-            check_score += 1
-        except:
-            error_msg('That training data \n file does not exist')
-        # validate and scale label
-        try:
-            train_df[my_feature] == True
-            check_score += 1
-        except:
-            error_msg('That feature column does not \n exist in the training data set file')
-        try:
-            # Scale the training set's label.
-            train_df[my_label] /= scale_factor
-            check_score += 1
-        except:
-            error_msg('That label column does not \n exist in the training data set file')
-        
-    test_df = None
-    # if the user elects to run the test data
-    if run_test_data == 1:
-        while check_score < 11:
-            # does the testing file exist
-            if len(testing_data) == 0:
-                error_msg('You must enter a \n test data file')
+        while check_score < 7:
+            # are the number types appropriate
+            try:
+                scale_factor = float(scale_factor)  
+                validation_split = float(validation_split)  
+                learning_rate = float(learning_rate) 
+                check_score += 1
+            except ValueError:
+                error_msg('Please make sure that scale factor, validation split, \n and learning rate are all valid decimal numbers')
+            try:
+                epochs = int(epochs) 
+                batch_size = int(batch_size) 
+                training_set_size = int(training_set_size) 
+                run_test_data = int(run_test_data)
+                check_score += 1
+            except ValueError:
+                error_msg('Please make sure that epochs, batch size, \n and training set size are all valid whole numbers')
+            
+            # are all numbers >= 0
+            if scale_factor <= 0 or epochs <= 0 or validation_split <= 0 or learning_rate <= 0 or batch_size <= 0 or training_set_size <= 0:
+                error_msg('No field may be \n 0 or negative')
             else:
                 check_score += 1
 
+            # does the training file exist
             try:
-                test_df = pd.read_csv(f"data/{testing_data}.csv")
+                train_df = pd.read_csv(f"data/{training_data}.csv")
                 check_score += 1
             except:
-                error_msg('That testing data \n file does not exist')
+                error_msg('That training data \n file does not exist')
+
+            # validate the feature
             try:
                 train_df[my_feature] == True
-                test_df[my_feature] == True
                 check_score += 1
             except:
-                error_msg('That feature column does not \n exist in the testing data set file')
+                error_msg('That feature column does not \n exist in the training data set file')
+
+            # validate and scale label
             try:
-                # Scale the test set's label
-                test_df[my_label] /= scale_factor
+                train_df[my_label] == True
+                train_df[my_label] /= scale_factor
                 check_score += 1
             except:
-                error_msg('That label column does not \n exist in the testing data set file')
-    
-    # run the program
-    train_df.head(n=training_set_size)
+                error_msg('That label column does not \n exist in the training data set file')
 
-    my_model = build_model(learning_rate)
+            
+        test_df = None
+        # if the user elects to run the test data
+        if run_test_data == 1:
+            while check_score < 11:
+                # does the testing file exist
+                if len(testing_data) == 0:
+                    error_msg('You must enter a \n test data file')
+                else:
+                    check_score += 1
 
-    shuffled_train_df = train_df.reindex(np.random.permutation(train_df.index))
+                try:
+                    test_df = pd.read_csv(f"data/{testing_data}.csv")
+                    check_score += 1
+                except:
+                    error_msg('That testing data \n file does not exist')
 
-    epochs, rmse, history = train_model(my_model, shuffled_train_df, my_feature, 
-                                        my_label, epochs, batch_size, 
-                                        validation_split)
+                try:
+                    test_df[my_feature] == True
+                    check_score += 1
+                except:
+                    error_msg('That feature column does not \n exist in the testing data set file')
 
-    plot_the_loss_curve(run_test_data, epochs, history["root_mean_squared_error"], 
-                    history["val_root_mean_squared_error"])
-    
-    if run_test_data == 1:
-        # Use the Test Dataset to Evaluate Your 
-        # Model's Performance
-        # The test set usually acts as the ultimate judge of a 
-        # model's quality. The test set can serve as an impartial 
-        # judge because its examples haven't been used in training 
-        # the model. 
-        x_test = test_df[my_feature]
-        y_test = test_df[my_label]
+                try:
+                    # Scale the test set's label
+                    test_df[my_label] /= scale_factor
+                    check_score += 1
+                except:
+                    error_msg('That label column does not \n exist in the testing data set file')
 
-        results = my_model.evaluate(x_test, y_test, batch_size=batch_size)
+
+        # run the program
+        train_df.head(n=training_set_size)
+
+        my_model = build_model(learning_rate)
+
+        shuffled_train_df = train_df.reindex(np.random.permutation(train_df.index))
+
+        epochs, rmse, history = train_model(my_model, shuffled_train_df, my_feature, 
+                                            my_label, epochs, batch_size, 
+                                            validation_split)
+
+        plot_the_loss_curve(run_test_data, epochs, history["root_mean_squared_error"], 
+                        history["val_root_mean_squared_error"])
+        
+        if run_test_data == 1:
+            # Use the Test Dataset to Evaluate Model's Performance
+            # The test set usually acts as the ultimate judge of a 
+            # model's quality. The test set can serve as an impartial 
+            # judge because its examples haven't been used in training 
+            # the model. 
+            x_test = test_df[my_feature]
+            y_test = test_df[my_label]
+
+            results = my_model.evaluate(x_test, y_test, batch_size=batch_size)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
-
 # build window
 window = tk.Tk()
 window.title("Validation and Test Sets")
@@ -331,6 +336,7 @@ validation_split_input.grid(row = 14, column = 0)
 
 # column 1
 
+
 # column 2
 # learning rate label and entry
 learning_rate_label = tk.Label(text = "Enter your desired learning rate \n (must be greater than 0.0): ",
@@ -376,6 +382,7 @@ run_test_data_checkbutton = tk.Checkbutton(text="Run test data",
 )
 run_test_data_checkbutton.grid(row = 2, column = 3)
 
+
 # run program button
 run_program_button = tk.Button(text = "Run analysis",
                         command = run_program_button_clicked,
@@ -383,6 +390,8 @@ run_program_button = tk.Button(text = "Run analysis",
                         bg = "blue"
 )
 run_program_button.grid(row = 12, column = 3)
+
+
 
 
 # to maintain window during use
